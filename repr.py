@@ -11,7 +11,7 @@ from lexor.core.writer import NodeWriter
 import lexor.core.elements as core
 
 INFO = init(
-    version=(0, 0, 1, 'final', 0),
+    version=(0, 0, 1, 'final', 1),
     lang='lexor',
     type='writer',
     description='Reproduces the lexor builtin method `__repr__`.',
@@ -33,7 +33,10 @@ class DefaultNW(NodeWriter):
     def start(self, node):
         tab = self.writer.defaults['tab_form']
         pid = self.writer.defaults['print_id']
-        self.write('%s%s' % (tab*node.level, node.name))
+        indent = tab*node.level
+        if node.name == '#document':
+            indent = tab*(node.level+1)
+        self.write('%s%s' % (indent, node.name))
         if not isinstance(node, core.Element):
             if pid.lower() == 'true':
                 self.write('[0x%x]' % id(node))
@@ -61,6 +64,7 @@ class DefaultNW(NodeWriter):
 
 MAPPING = {
     '__default__': DefaultNW,
-    '#document': DefaultNW,
-    '#text': DefaultNW,
+    '#document': '__default__',
+    '#text': '__default__',
+    '#entity': '__default__',
 }
