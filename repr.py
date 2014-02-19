@@ -11,7 +11,7 @@ from lexor.core.writer import NodeWriter
 import lexor.core.elements as core
 
 INFO = init(
-    version=(0, 0, 1, 'final', 1),
+    version=(0, 0, 2, 'final', 0),
     lang='lexor',
     type='writer',
     description='Reproduces the lexor builtin method `__repr__`.',
