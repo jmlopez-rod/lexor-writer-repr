@@ -66,7 +66,7 @@ content
 We can use this style to make sure that the html parser works
 correctly
 
-```bash
+```console
 $ lexor example.html to lexor~repr~
 #document: (example.html:html:default)
 html:
@@ -84,7 +84,7 @@ html:
 To make sure that each node is being read properly we can print the
 code position
 
-```bash
+```console
 $ lexor example.html to lexor~repr@print_pos=true~
 #document[0:0]: (example.html:html:default)
 html[1:1]:
