@@ -5,16 +5,32 @@ This writing style reproduces the lexor builtin `Node` method
 `__repr__`. Its goal is to provide you with the all the information
 contained in a document.
 
+## Installation
+
+For a local installation 
+
+    $ lexor install lexor.writer.repr
+
+If there is a problem with the registry you may try a more direct
+approach
+
+    $ lexor install git+https://github.com/jmlopez-rod/lexor-writer-repr
+
+You may use the `-u` option to install in the python user-site
+directory or `-g` for a global installation (requires sudo rights).
+
+If you have a `lexor.config` file in place you may also want to use
+the `--save` option so that the dependency gets saved.
 
 ## Command line usage
 
 Without document conversion
 
-    lexor filename.ext to lexor~repr~
+    $ lexor filename.ext to lexor~repr~
 
 Converting to another language and writing it with this style
 
-    lexor filename.ext to lang[cstyle:lexor.repr]
+    $ lexor filename.ext to lang[cstyle:lexor.repr]
 
 
 ## Options
@@ -39,39 +55,45 @@ You may override these options in the command line by appending
 Suppose we have the html file `example.html` with the following
 content
 
-    <html>
-      <body>
-        <p>Hello World</p>
-      </body>
-    </html>
+```html
+<html>
+  <body>
+    <p>Hello World</p>
+  </body>
+</html>
+```
 
 We can use this style to make sure that the html parser works
 correctly
 
-    $ lexor example.html to lexor~repr~
-    #document: (example.html:html:default)
-    html:
-      #text: '\n  '
-      body:
-        #text: '\n    '
-        p:
-          #text: 'Hello World'
-        #text: '\n  '
-      #text: '\n'
-    #text: '\n'
+```bash
+$ lexor example.html to lexor~repr~
+#document: (example.html:html:default)
+html:
+  #text: '\n  '
+  body:
+    #text: '\n    '
+    p:
+      #text: 'Hello World'
+    #text: '\n  '
+  #text: '\n'
+#text: '\n'
+```
 
 
 To make sure that each node is being read properly we can print the
 code position
 
-    $ lexor example.html to lexor~repr@print_pos=true~
-    #document[0:0]: (example.html:html:default)
-    html[1:1]:
-      #text[1:7]: '\n  '
-      body[2:3]:
-        #text[2:9]: '\n    '
-        p[3:5]:
-          #text[3:8]: 'Hello World'
-        #text[3:23]: '\n  '
-      #text[4:10]: '\n'
-    #text[5:8]: '\n'
+```bash
+$ lexor example.html to lexor~repr@print_pos=true~
+#document[0:0]: (example.html:html:default)
+html[1:1]:
+  #text[1:7]: '\n  '
+  body[2:3]:
+    #text[2:9]: '\n    '
+    p[3:5]:
+      #text[3:8]: 'Hello World'
+    #text[3:23]: '\n  '
+  #text[4:10]: '\n'
+#text[5:8]: '\n'
+```
