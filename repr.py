@@ -10,7 +10,7 @@ from lexor.core.writer import NodeWriter
 import lexor.core.elements as core
 
 INFO = init(
-    version=(0, 1, 0, 'final', 0),
+    version=(0, 1, 1, 'final', 0),
     lang='lexor',
     type='writer',
     description='Reproduces the lexor builtin method `__repr__`.',
@@ -76,9 +76,32 @@ class DefaultNW(NodeWriter):
         self.write(' %r\n' % node.data)
 
 
+class CDataNW(NodeWriter):
+    """Print out the character data with a level of indentation."""
+
+    def start(self, node):
+        opt = self.writer.defaults
+        tab = opt['tab_form']
+        pid = opt['print_id'].lower() in TRUE
+        pos = opt['print_pos'].lower() in TRUE
+        indent = tab*node.level
+        self.write('%s%s' % (indent, node.name))
+        if pos:
+            self.write('[%s:%s]' % node.node_position)
+        if pid:
+            self.write('[0x%x]' % id(node))
+        self.write(':')
+
+    def data(self, node):
+        tab = self.writer.defaults['tab_form']
+        indent = '\n%s|' % (tab*(node.level+1))
+        self.write(indent)
+        self.write('%s\n' % indent.join(node.data.split('\n')))
+
 MAPPING = {
     '__default__': DefaultNW,
     '#document': '__default__',
     '#text': '__default__',
     '#entity': '__default__',
+    '#cdata-section': CDataNW,
 }
